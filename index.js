@@ -2,10 +2,13 @@ const express = require("express");
 const formidable = require("express-formidable");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
+const cors = require("cors");
+
 require("dotenv").config();
 
 const app = express();
 app.use(formidable());
+app.use(cors());
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -29,6 +32,6 @@ app.all("*", (req, res) => {
   res.status(400).json({ error: "Je suis perdu" });
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server Started");
 });
