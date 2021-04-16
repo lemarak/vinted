@@ -46,7 +46,7 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
     await offer.save();
 
     // upload picture
-    const product_image = {};
+    let product_image = {};
     if (req.files.picture) {
       const resultUpload = await cloudinary.uploader.upload(
         req.files.picture.path,
