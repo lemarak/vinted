@@ -46,13 +46,16 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
     await offer.save();
 
     // upload picture
-    const resultUpload = await cloudinary.uploader.upload(
-      req.files.picture.path,
-      {
-        folder: `/vinted/offer/${offer.id}`,
-      }
-    );
-    const product_image = { secure_url: resultUpload.secure_url };
+    const product_image = {};
+    if (req.files.picture) {
+      const resultUpload = await cloudinary.uploader.upload(
+        req.files.picture.path,
+        {
+          folder: `/vinted/offer/${offer.id}`,
+        }
+      );
+      product_image = { secure_url: resultUpload.secure_url };
+    }
 
     // update offer with product_image
     offer.product_image = product_image;
@@ -213,3 +216,7 @@ router.get("/offer/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+// {
+//   "error": "Cannot read property 'path' of undefined"
+// }
