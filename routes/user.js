@@ -31,13 +31,16 @@ router.post("/user/signup", async (req, res) => {
     const token = uid2(64);
 
     // upload avatar
-    const resultUpload = await cloudinary.uploader.upload(
-      req.files.avatar.path,
-      {
-        folder: "/vinted/users",
-      }
-    );
-    const avatar = { secure_url: resultUpload.secure_url };
+    const avatar = {};
+    if (req.files.avatar) {
+      const resultUpload = await cloudinary.uploader.upload(
+        req.files.avatar.path,
+        {
+          folder: "/vinted/users",
+        }
+      );
+      avatar = { secure_url: resultUpload.secure_url };
+    }
 
     // save user
     const newUser = new User({
